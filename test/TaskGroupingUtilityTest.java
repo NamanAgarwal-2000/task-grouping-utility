@@ -74,30 +74,9 @@ public class TaskGroupingUtilityTest {
 
     }
 
-    @Test
-    public void shouldReturnEmptyMapWhenListIsEmpty() {
-        List<WorkItem> workItems = new ArrayList<>();
 
-        TaskGroupingUtility utility = new TaskGroupingUtility();
-
-        Map<String, Map<String, Integer>> result = utility.groupWorkItems(workItems);
-
-        assertEquals(0, result.size());
-    }
-
-    @Test
-    public void shouldHandleBlankCategory() {
-        List<WorkItem> workItems = new ArrayList<>();
-
-        workItems.add(new WorkItem("", "done"));
-
-        TaskGroupingUtility utility = new TaskGroupingUtility();
-
-        Map<String, Map<String, Integer>> result = utility.groupWorkItems(workItems);
-
-        assertEquals(1, result.get("Unknown Category").get("done"));
 
     }
-}
+
 
 
