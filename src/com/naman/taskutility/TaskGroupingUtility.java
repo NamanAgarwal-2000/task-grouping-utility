@@ -17,6 +17,10 @@ public class TaskGroupingUtility {
             String category = workItem.getCategory();
             String status = workItem.getStatus();
 
+            System.out.println("Processing category:" + category);
+            System.out.println("Processing status:" + status);
+
+
             if(category == null || category.isBlank()){
                 category = "Unknown Category";
             }
