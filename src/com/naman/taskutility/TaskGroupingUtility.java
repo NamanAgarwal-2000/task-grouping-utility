@@ -17,11 +17,11 @@ public class TaskGroupingUtility {
             String category = workItem.getCategory();
             String status = workItem.getStatus();
 
-         // Handle null or blank category for category
+         // Handle null or blank category values
             if(category == null || category.isBlank()){
                 category = "Unknown Category";
             }
-            // Handle null or blank category for status
+            // Handle null or blank status values
             if(status == null || status.isBlank()) {
                 status = "Unknown Status";
             }
