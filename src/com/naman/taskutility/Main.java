@@ -1,6 +1,7 @@
 package com.naman.taskutility;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,25 @@ public class Main {
         ProblemProgressReportGenerator utility = new ProblemProgressReportGenerator();
 
         Map<String, Map<String, Integer>> groupedResult = utility.generateReport(problems);
+
+        Map<String, Integer> difficultyCount = new HashMap<>();
+
+        for (Problem problem : problems) {
+
+            String difficulty = problem.getDifficulty();
+
+            if (difficulty == null || difficulty.isBlank()) {
+                difficulty = "unknown";
+            }
+
+            difficultyCount.put(
+                    difficulty,
+                    difficultyCount.getOrDefault(difficulty, 0) + 1
+            );
+        }
+
+        System.out.println("Difficulty Summary:");
+        System.out.println(difficultyCount);
 
         System.out.println("Total Problems: " + problems.size());
 
