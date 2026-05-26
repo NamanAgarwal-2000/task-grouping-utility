@@ -35,23 +35,19 @@ src
 
 Run:
 
-```
-Main.java
+```bash
+mvn exec:java -Dexec.args="src/main/resources/problems.json"
 ```
 
 ## Run Tests
 
 Run:
 
-```
-ProblemProgressReportGeneratorTest.java
-```
-
-Or use:
-
-```
+```bash
 mvn test
 ```
+
+Requires Java 17
 
 ## Sample Output
 

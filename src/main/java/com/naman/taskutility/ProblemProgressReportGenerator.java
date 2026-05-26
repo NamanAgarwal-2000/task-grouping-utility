@@ -44,6 +44,14 @@ public class ProblemProgressReportGenerator {
                 status = "Unknown Status";
             }
 
+            if (status.equalsIgnoreCase("done")) {
+                status = "Completed";
+            }
+
+            if (status.equalsIgnoreCase("pending")) {
+                status = "Pending";
+            }
+
             if (difficulty == null || difficulty.isBlank()) {
                 difficulty = "Unknown Difficulty";
             }
@@ -85,19 +93,6 @@ public class ProblemProgressReportGenerator {
         int hours = totalTimeSpent / 60;
         int minutes = totalTimeSpent % 60;
 
-
-        System.out.println("Completed Problems: " + completedCount);
-
-        System.out.println("Pending Problems: " + pendingCount);
-
-        System.out.println("Difficulty Summary:");
-        System.out.println(difficultySummary);
-
-        System.out.println("Total Problems: " + problems.size());
-
-        System.out.println(
-                "Total Time Spent: " + hours + "h " + minutes + "m"
-        );
 
         return new ReportSummary(
                 completedCount,
