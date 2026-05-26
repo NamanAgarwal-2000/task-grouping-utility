@@ -7,22 +7,19 @@ public class Main {
 
     public static void main(String[] args) {
 
-
+         String filePath = args[0];
         ProblemJsonReader reader = new ProblemJsonReader();
 
         List<Problem> problems =
-                reader.readProblems("src/main/resources/problems.json");
+                reader.readProblems(filePath);
 
 
         ProblemProgressReportGenerator utility =
                 new ProblemProgressReportGenerator();
 
-        Map<String, Map<String, Integer>> result =
+        ReportSummary report =
                 utility.generateReport(problems);
 
-
-        System.out.println("final grouped result");
-
-        System.out.println(result);
+        System.out.println(report.getGroupedResult());
     }
 }

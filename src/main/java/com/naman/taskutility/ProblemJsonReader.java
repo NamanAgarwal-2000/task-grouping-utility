@@ -22,11 +22,7 @@ public class ProblemJsonReader {
             );
 
         } catch (IOException e) {
-
-            System.out.println("Error reading JSON file");
-            e.printStackTrace();
-
-            return new ArrayList<>();
+            throw  new RuntimeException("Failed to read JSON file", e);
         }
     }
 }

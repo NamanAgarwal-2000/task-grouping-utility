@@ -6,12 +6,19 @@ import java.util.Map;
 
 public class ProblemProgressReportGenerator {
 
-    public Map<String, Map<String, Integer>> generateReport(List<Problem> problems) {
+    public ReportSummary generateReport(List<Problem> problems) {
 
         Map<String, Map<String, Integer>> groupedResult = new HashMap<>();
 
         if (problems == null || problems.isEmpty()) {
-            return groupedResult;
+            return new ReportSummary(
+                    0,
+                    0,
+                    0,
+                    "0h 0m",
+                    new HashMap<>(),
+                    groupedResult
+            );
         }
 
         int completedCount = 0;
@@ -92,6 +99,13 @@ public class ProblemProgressReportGenerator {
                 "Total Time Spent: " + hours + "h " + minutes + "m"
         );
 
-        return groupedResult;
+        return new ReportSummary(
+                completedCount,
+                pendingCount,
+                problems.size(),
+                hours + "h " + minutes + "m",
+                difficultySummary,
+                groupedResult
+        );
     }
 }

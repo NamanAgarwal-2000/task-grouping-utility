@@ -38,18 +38,129 @@ public class ProblemProgressReportGeneratorTest {
         ProblemProgressReportGenerator generator =
                 new ProblemProgressReportGenerator();
 
-        Map<String, Map<String, Integer>> result =
+        ReportSummary report =
                 generator.generateReport(problems);
 
         assertEquals(
                 1,
-                result.get("Array").get("Completed")
+                report.getGroupedResult().get("Array").get("Completed")
         );
 
         assertEquals(
                 1,
-                result.get("Tree").get("Pending")
+                report.getGroupedResult().get("Tree").get("Pending")
         );
+    }
+
+    @Test
+    void shouldHandleMissingFields() {
+
+        List<Problem> problems = new ArrayList<>();
+
+        problems.add(
+                new Problem(
+                        "Test Problem",
+                        "",
+                        "",
+                        "",
+                        20
+                )
+        );
+
+        ProblemProgressReportGenerator generator =
+                new ProblemProgressReportGenerator();
+
+        ReportSummary report =
+                generator.generateReport(problems);
+
+        assertEquals(
+                1,
+                report.getGroupedResult()
+                        .get("Unknown Category")
+                        .get("Unknown Status")
+        );
+    }
+
+    @Test
+    void shouldHandleNegativeTime() {
+
+        List<Problem> problems = new ArrayList<>();
+
+        problems.add(
+                new Problem(
+                        "DP Problem",
+                        "DP",
+                        "Hard",
+                        "Completed",
+                        -30
+                )
+        );
+
+        ProblemProgressReportGenerator generator =
+                new ProblemProgressReportGenerator();
+
+        ReportSummary report =
+                generator.generateReport(problems);
+
+        assertEquals(
+                1,
+                report.getGroupedResult()
+                        .get("DP")
+                        .get("Completed")
+        );
+    }
+
+    @Test
+    void shouldHandleInvalidStatusAndDifficulty() {
+
+        List<Problem> problems = new ArrayList<>();
+
+        problems.add(
+                new Problem(
+                        "Graph Problem",
+                        "Graph",
+                        "",
+                        "",
+                        40
+                )
+        );
+
+        ProblemProgressReportGenerator generator =
+                new ProblemProgressReportGenerator();
+
+        ReportSummary report =
+                generator.generateReport(problems);
+
+        assertEquals(
+                1,
+                report.getGroupedResult()
+                        .get("Graph")
+                        .get("Unknown Status")
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionForInvalidJsonPath() {
+
+        ProblemJsonReader reader =
+                new ProblemJsonReader();
+
+        assertThrows(
+                RuntimeException.class,
+                () -> reader.readProblems("invalid/path/problems.json")
+        );
+    }
+
+    @Test
+    void shouldHandleNullInput() {
+
+        ProblemProgressReportGenerator generator =
+                new ProblemProgressReportGenerator();
+
+        ReportSummary report =
+                generator.generateReport(null);
+
+        assertTrue(report.getGroupedResult().isEmpty());
     }
 
     @Test
@@ -60,9 +171,9 @@ public class ProblemProgressReportGeneratorTest {
         ProblemProgressReportGenerator generator =
                 new ProblemProgressReportGenerator();
 
-        Map<String, Map<String, Integer>> result =
+        ReportSummary report =
                 generator.generateReport(problems);
 
-        assertTrue(result.isEmpty());
+        assertTrue(report.getGroupedResult().isEmpty());
     }
 }
