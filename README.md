@@ -49,7 +49,7 @@ ProblemProgressReportGeneratorTest.java
 
 Or use:
 
-```bash
+```
 mvn test
 ```
 
