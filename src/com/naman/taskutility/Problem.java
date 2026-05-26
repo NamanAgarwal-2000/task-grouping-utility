@@ -8,6 +8,10 @@ public class Problem {
     private String status;
     private int timeSpentMinutes;
 
+    public Problem() {
+
+    }
+
     public Problem(String title,
                    String category,
                    String difficulty,
