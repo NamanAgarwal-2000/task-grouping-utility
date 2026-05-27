@@ -8,6 +8,10 @@ public class Problem {
     private String status;
     private int timeSpentMinutes;
 
+    public Problem() {
+
+    }
+
     public Problem(String title,
                    String category,
                    String difficulty,
@@ -17,7 +21,11 @@ public class Problem {
         this.title = title;
         this.category = category;
         this.difficulty = difficulty;
-        this.status = status;
+        if (status == null || status.isBlank()) {
+            this.status = "";
+        } else {
+            this.status = status.trim().toLowerCase();
+        }
         this.timeSpentMinutes = timeSpentMinutes;
     }
 
