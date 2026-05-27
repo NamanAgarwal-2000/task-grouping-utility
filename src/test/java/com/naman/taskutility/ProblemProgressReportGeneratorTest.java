@@ -62,7 +62,7 @@ public class ProblemProgressReportGeneratorTest {
                         "Test Problem",
                         "",
                         "",
-                        "",
+                        "pending",
                         20
                 )
         );
@@ -73,12 +73,7 @@ public class ProblemProgressReportGeneratorTest {
         ReportSummary report =
                 generator.generateReport(problems);
 
-        assertEquals(
-                1,
-                report.getGroupedResult()
-                        .get("Unknown Category")
-                        .get("Unknown Status")
-        );
+        assertTrue(report.getGroupedResult().isEmpty());
     }
 
     @Test
@@ -120,7 +115,7 @@ public class ProblemProgressReportGeneratorTest {
                         "Graph Problem",
                         "Graph",
                         "",
-                        "",
+                        "in_progress",
                         40
                 )
         );
@@ -131,12 +126,7 @@ public class ProblemProgressReportGeneratorTest {
         ReportSummary report =
                 generator.generateReport(problems);
 
-        assertEquals(
-                1,
-                report.getGroupedResult()
-                        .get("Graph")
-                        .get("Unknown Status")
-        );
+        assertEquals(0, report.getTotalProblems());
     }
 
     @Test

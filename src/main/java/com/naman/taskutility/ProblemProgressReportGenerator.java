@@ -23,6 +23,7 @@ public class ProblemProgressReportGenerator {
 
         int completedCount = 0;
         int pendingCount = 0;
+        int validCount = 0;
 
         int totalTimeSpent = 0;
 
@@ -36,12 +37,12 @@ public class ProblemProgressReportGenerator {
             int timeSpentMinutes = problem.getTimeSpentMinutes();
 
             if (category == null || category.isBlank()) {
-                category = "Unknown Category";
+                continue;
             }
 
 
             if (status == null || status.isBlank()) {
-                status = "Unknown Status";
+                continue;
             }
 
             if (status.equalsIgnoreCase("done")) {
@@ -50,6 +51,11 @@ public class ProblemProgressReportGenerator {
 
             if (status.equalsIgnoreCase("pending")) {
                 status = "pending";
+            }
+
+            if (!status.equals("completed")
+                    && !status.equals("pending")) {
+                continue;
             }
 
             if (difficulty == null || difficulty.isBlank()) {
@@ -61,6 +67,7 @@ public class ProblemProgressReportGenerator {
                 timeSpentMinutes = 0;
             }
 
+            validCount++;
 
             if ("completed".equalsIgnoreCase(status)) {
                 completedCount++;
@@ -97,7 +104,7 @@ public class ProblemProgressReportGenerator {
         return new ReportSummary(
                 completedCount,
                 pendingCount,
-                problems.size(),
+                validCount,
                 hours + "h " + minutes + "m",
                 difficultySummary,
                 groupedResult

@@ -94,7 +94,7 @@ Example:
 
 
 ```bash
-mvn exec:java -Dexec.args="src/main/resources/problems.csv"
+mvn exec:java -Dexec.args="src/main/resources/problems.csv output/report.json"
 ```
 ```
 
