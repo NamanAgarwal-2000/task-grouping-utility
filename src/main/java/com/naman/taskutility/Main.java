@@ -13,17 +13,40 @@ public class Main {
         }
         String filePath = args[0];
 
-        ProblemJsonReader reader = new ProblemJsonReader();
+        List<Problem> problems;
 
-        List<Problem> problems =
-                reader.readProblems(filePath);
+        if (filePath.trim().toLowerCase().endsWith(".json")) {
 
+            ProblemJsonReader reader = new ProblemJsonReader();
+            problems = reader.readProblems(filePath);
+
+        } else if (filePath.trim().toLowerCase().endsWith(".csv")) {
+
+            ProblemCsvReader reader = new ProblemCsvReader();
+            problems = reader.readProblems(filePath);
+
+        } else {
+
+            System.out.println("Unsupported file type");
+            return;
+        }
 
         ProblemProgressReportGenerator utility =
                 new ProblemProgressReportGenerator();
 
         ReportSummary report =
                 utility.generateReport(problems);
+
+        if (args.length > 1) {
+
+            String outputPath = args[1];
+
+            ReportJsonExporter exporter = new ReportJsonExporter();
+
+            exporter.exportReport(report, outputPath);
+
+            System.out.println("Report exported to: " + outputPath);
+        }
 
         System.out.println("Completed Problems: " + report.getCompletedProblems());
 

@@ -45,11 +45,11 @@ public class ProblemProgressReportGenerator {
             }
 
             if (status.equalsIgnoreCase("done")) {
-                status = "Completed";
+                status = "completed";
             }
 
             if (status.equalsIgnoreCase("pending")) {
-                status = "Pending";
+                status = "pending";
             }
 
             if (difficulty == null || difficulty.isBlank()) {
@@ -62,12 +62,12 @@ public class ProblemProgressReportGenerator {
             }
 
 
-            if ("Completed".equalsIgnoreCase(status)) {
+            if ("completed".equalsIgnoreCase(status)) {
                 completedCount++;
             }
 
 
-            if ("Pending".equalsIgnoreCase(status)) {
+            if ("pending".equalsIgnoreCase(status)) {
                 pendingCount++;
             }
 

@@ -20,7 +20,7 @@ public class ProblemProgressReportGeneratorTest {
                         "Two Sum",
                         "Array",
                         "Easy",
-                        "Completed",
+                        "completed",
                         30
                 )
         );
@@ -30,7 +30,7 @@ public class ProblemProgressReportGeneratorTest {
                         "Binary Tree",
                         "Tree",
                         "Medium",
-                        "Pending",
+                        "pending",
                         60
                 )
         );
@@ -43,12 +43,12 @@ public class ProblemProgressReportGeneratorTest {
 
         assertEquals(
                 1,
-                report.getGroupedResult().get("Array").get("Completed")
+                report.getGroupedResult().get("Array").get("completed")
         );
 
         assertEquals(
                 1,
-                report.getGroupedResult().get("Tree").get("Pending")
+                report.getGroupedResult().get("Tree").get("pending")
         );
     }
 
@@ -91,7 +91,7 @@ public class ProblemProgressReportGeneratorTest {
                         "DP Problem",
                         "DP",
                         "Hard",
-                        "Completed",
+                        "completed",
                         -30
                 )
         );
@@ -106,7 +106,7 @@ public class ProblemProgressReportGeneratorTest {
                 1,
                 report.getGroupedResult()
                         .get("DP")
-                        .get("Completed")
+                        .get("completed")
         );
     }
 
@@ -175,5 +175,16 @@ public class ProblemProgressReportGeneratorTest {
                 generator.generateReport(problems);
 
         assertTrue(report.getGroupedResult().isEmpty());
+    }
+
+    @Test
+    void shouldHandleEmptyJsonFile() {
+
+        ProblemJsonReader reader = new ProblemJsonReader();
+
+        List<Problem> problems =
+                reader.readProblems("src/main/resources/empty.json");
+
+        assertEquals(0, problems.size());
     }
 }

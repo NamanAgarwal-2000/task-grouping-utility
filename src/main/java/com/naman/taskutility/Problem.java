@@ -21,7 +21,7 @@ public class Problem {
         this.title = title;
         this.category = category;
         this.difficulty = difficulty;
-        this.status = status;
+        this.status = status.toLowerCase().trim();
         this.timeSpentMinutes = timeSpentMinutes;
     }
 
