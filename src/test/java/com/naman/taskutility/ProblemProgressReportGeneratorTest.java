@@ -177,4 +177,40 @@ public class ProblemProgressReportGeneratorTest {
 
         assertEquals(0, problems.size());
     }
+
+    @Test
+    void shouldHandleCapitalizedJsonStatuses() {
+
+        List<Problem> problems = new ArrayList<>();
+
+        problems.add(
+                new Problem(
+                        "Array Problem",
+                        "Array",
+                        "Easy",
+                        "Completed",
+                        60
+                )
+        );
+
+        problems.add(
+                new Problem(
+                        "Graph Problem",
+                        "Graph",
+                        "Medium",
+                        "Pending",
+                        45
+                )
+        );
+
+        ProblemProgressReportGenerator generator =
+                new ProblemProgressReportGenerator();
+
+        ReportSummary report =
+                generator.generateReport(problems);
+
+        assertEquals(1, report.getCompletedProblems());
+        assertEquals(1, report.getPendingProblems());
+        assertEquals(2, report.getTotalProblems());
+    }
 }

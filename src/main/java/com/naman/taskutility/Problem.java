@@ -21,9 +21,10 @@ public class Problem {
         this.title = title;
         this.category = category;
         this.difficulty = difficulty;
-        this.status = status.toLowerCase().trim();
         if (status == null || status.isBlank()) {
-            status = "unknown";
+            this.status = "";
+        } else {
+            this.status = status.trim().toLowerCase();
         }
         this.timeSpentMinutes = timeSpentMinutes;
     }

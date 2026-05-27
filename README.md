@@ -51,19 +51,27 @@ mvn test
 Requires Java 17
 
 ## Sample Output
-
+```json
+{
+  "completedProblems": 3,
+  "pendingProblems": 2,
+  "totalProblems": 5,
+  "totalTimeSpent": "5h 45m",
+  "difficultySummary": {
+    "Easy": 1,
+    "Medium": 2,
+    "Hard": 2
+  },
+  "groupedResult": {
+    "Array": {
+      "completed": 1
+    },
+    "Graph": {
+      "pending": 1
+    }
+  }
+}
 ```
-Completed Problems: 3
-Pending Problems: 2
-
-Difficulty Summary:
-{Easy=1, Medium=2, Hard=2}
-
-Total Problems: 5
-
-Total Time Spent: 5h 45m
-```
-
 ## Edge Cases Handled
 
 - Empty input

@@ -45,6 +45,8 @@ public class ProblemProgressReportGenerator {
                 continue;
             }
 
+            status = status.trim().toLowerCase();
+
             if (status.equalsIgnoreCase("done")) {
                 status = "completed";
             }
