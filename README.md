@@ -111,23 +111,34 @@ Generated report:
 
 ```json
 {
-"validCount": 5,
-"invalidCount": 0,
-  "reportSummary": {
-    "completedProblems": 1,
-    "pendingProblems": 1,
-    "totalProblems": 2,
-    "totalTimeSpent": "1h 30m"
-  },
-  "invalidRecords": [
-    {
-      "sourceIndex": 2,
-      "reason": "Missing title"
+  "reportSummary" : {
+    "completedProblems" : 3,
+    "pendingProblems" : 2,
+    "totalProblems" : 5,
+    "totalTimeSpent" : "5h 45m",
+    "difficultySummary" : {
+      "Easy" : 1,
+      "Medium" : 2,
+      "Hard" : 2
     },
-    {
-      "sourceIndex": 4,
-      "reason": "Invalid status"
+    "groupedResult" : {
+      "Array" : {
+        "pending" : 1,
+        "completed" : 1
+      },
+      "Graph" : {
+        "completed" : 1
+      },
+      "Tree" : {
+        "pending" : 1
+      },
+      "DP" : {
+        "completed" : 1
+      }
     }
-  ]
+  },
+  "invalidRecords" : [ ],
+  "validCount" : 5,
+  "invalidCount" : 0
 }
 ```
