@@ -83,7 +83,7 @@ Requires Java 17
 - Invalid number in CSV
 - Negative time handling
 - Status normalization (done/completed/pending)
-
+- Missing category validation with invalid record reporting
 ---
 
 ## New Features Added
@@ -93,6 +93,7 @@ Requires Java 17
 - Auto-detect input type using file extension
 - Graceful handling for invalid records
 - Added tests for CSV and JSON support
+- Added invalid record reporting support
 
 ---
 
@@ -110,9 +111,23 @@ Generated report:
 
 ```json
 {
-  "completedProblems": 1,
-  "pendingProblems": 1,
-  "totalProblems": 2,
-  "totalTimeSpent": "1h 30m"
+"validCount": 5,
+"invalidCount": 0,
+  "reportSummary": {
+    "completedProblems": 1,
+    "pendingProblems": 1,
+    "totalProblems": 2,
+    "totalTimeSpent": "1h 30m"
+  },
+  "invalidRecords": [
+    {
+      "sourceIndex": 2,
+      "reason": "Missing title"
+    },
+    {
+      "sourceIndex": 4,
+      "reason": "Invalid status"
+    }
+  ]
 }
 ```

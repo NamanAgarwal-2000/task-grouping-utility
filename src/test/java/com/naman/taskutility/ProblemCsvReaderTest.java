@@ -15,23 +15,26 @@ public class ProblemCsvReaderTest {
 
         ProblemCsvReader reader = new ProblemCsvReader();
 
-        List<Problem> problems =
+        ValidationResult result =
                 reader.readProblems("src/main/resources/problems.csv");
+
+        List<Problem> problems = result.getValidProblems();
 
         assertEquals(3, problems.size());
 
         assertEquals("Two Sum", problems.get(0).getTitle());
 
-        assertEquals("done", problems.get(0).getStatus());
+        assertEquals("completed", problems.get(0).getStatus());
     }
 
     @Test
     void shouldSkipInvalidCsvRows() {
 
         ProblemCsvReader reader = new ProblemCsvReader();
-
-        List<Problem> problems =
+        ValidationResult result =
                 reader.readProblems("src/main/resources/invalid-problems.csv");
+
+        List<Problem> problems = result.getValidProblems();
 
         assertEquals(1, problems.size());
 
@@ -60,8 +63,10 @@ public class ProblemCsvReaderTest {
 
         ProblemCsvReader reader = new ProblemCsvReader();
 
-        List<Problem> problems =
+        ValidationResult result =
                 reader.readProblems("src/main/resources/empty.csv");
+
+        List<Problem> problems = result.getValidProblems();
 
         assertEquals(0, problems.size());
     }
