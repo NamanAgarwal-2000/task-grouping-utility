@@ -1,29 +1,34 @@
 [
   {
+    "title": "Two Sum",
     "category": "Array",
     "status": "Completed",
     "difficulty": "Easy",
     "timeSpentMinutes": 30
   },
   {
+    "title": "Binary Search",
     "category": "Array",
     "status": "Pending",
     "difficulty": "Medium",
     "timeSpentMinutes": 45
   },
   {
+    "title": "Shortest Path",
     "category": "Graph",
     "status": "Completed",
     "difficulty": "Hard",
     "timeSpentMinutes": 90
   },
   {
+    "title": "Tree Traversal",
     "category": "Tree",
     "status": "Pending",
     "difficulty": "Medium",
     "timeSpentMinutes": 60
   },
   {
+    "title": "Knapsack Problem",
     "category": "DP",
     "status": "Completed",
     "difficulty": "Hard",

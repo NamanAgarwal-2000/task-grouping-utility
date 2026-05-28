@@ -49,10 +49,17 @@ public class ProblemCsvReader {
                     continue;
                 }
                 String category = data[1].trim();
+                if (category.isBlank()) {
+                    invalidRecords.add(
+                            new InvalidRecord(rowNumber, "Missing category")
+                    );
+                    continue;
+                }
                 String difficulty = data[2].trim();
                 String status = data[3].trim();
 
                 if (!status.equalsIgnoreCase("done")
+                        && !status.equalsIgnoreCase("completed")
                         && !status.equalsIgnoreCase("pending")) {
 
                     invalidRecords.add(
@@ -74,6 +81,12 @@ public class ProblemCsvReader {
                             new InvalidRecord(rowNumber, "Invalid time")
                     );
                     continue;
+                }
+                if (status.equalsIgnoreCase("done")) {
+                    status = "completed";
+                }
+                if (status.equalsIgnoreCase("completed")) {
+                    status = "completed";
                 }
 
 

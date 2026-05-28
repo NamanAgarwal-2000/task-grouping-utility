@@ -69,6 +69,7 @@ public class ProblemJsonReader {
 
                 if (status == null
                         || (!status.equalsIgnoreCase("done")
+                        && !status.equalsIgnoreCase("completed")
                         && !status.equalsIgnoreCase("pending"))) {
 
                     invalidRecords.add(

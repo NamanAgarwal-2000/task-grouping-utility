@@ -52,7 +52,12 @@ public class Main {
 
 
             ExportResult exportResult =
-                    new ExportResult(report, validationResult.getInvalidRecords());
+                    new ExportResult(
+                            report,
+                            validationResult.getInvalidRecords(),
+                            validationResult.getValidProblems().size(),
+                            validationResult.getInvalidRecords().size()
+                    );
 
             exporter.exportReport(exportResult, outputPath);
 

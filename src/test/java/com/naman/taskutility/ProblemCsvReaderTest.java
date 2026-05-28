@@ -20,11 +20,11 @@ public class ProblemCsvReaderTest {
 
         List<Problem> problems = result.getValidProblems();
 
-        assertEquals(2, problems.size());
+        assertEquals(3, problems.size());
 
         assertEquals("Two Sum", problems.get(0).getTitle());
 
-        assertEquals("done", problems.get(0).getStatus());
+        assertEquals("completed", problems.get(0).getStatus());
     }
 
     @Test
