@@ -1,0 +1,22 @@
+{
+  "completedProblems" : 2,
+  "pendingProblems" : 1,
+  "totalProblems" : 3,
+  "totalTimeSpent" : "3h 30m",
+  "difficultySummary" : {
+    "Easy" : 1,
+    "Medium" : 1,
+    "Hard" : 1
+  },
+  "groupedResult" : {
+    "Array" : {
+      "completed" : 1
+    },
+    "Graph" : {
+      "completed" : 1
+    },
+    "Tree" : {
+      "pending" : 1
+    }
+  }
+}

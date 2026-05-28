@@ -14,16 +14,23 @@ public class Main {
         String filePath = args[0];
 
         List<Problem> problems;
+        ValidationResult validationResult = null;
 
         if (filePath.trim().toLowerCase().endsWith(".json")) {
-
             ProblemJsonReader reader = new ProblemJsonReader();
-            problems = reader.readProblems(filePath);
+
+            validationResult =
+                    reader.readProblems(filePath);
+
+            problems = validationResult.getValidProblems();
 
         } else if (filePath.trim().toLowerCase().endsWith(".csv")) {
 
             ProblemCsvReader reader = new ProblemCsvReader();
-            problems = reader.readProblems(filePath);
+
+            validationResult = reader.readProblems(filePath);
+
+            problems = validationResult.getValidProblems();
 
         } else {
 
@@ -43,7 +50,11 @@ public class Main {
 
             ReportJsonExporter exporter = new ReportJsonExporter();
 
-            exporter.exportReport(report, outputPath);
+
+            ExportResult exportResult =
+                    new ExportResult(report, validationResult.getInvalidRecords());
+
+            exporter.exportReport(exportResult, outputPath);
 
             System.out.println("Report exported to: " + outputPath);
         }

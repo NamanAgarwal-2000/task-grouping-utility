@@ -110,9 +110,21 @@ Generated report:
 
 ```json
 {
-  "completedProblems": 1,
-  "pendingProblems": 1,
-  "totalProblems": 2,
-  "totalTimeSpent": "1h 30m"
+  "reportSummary": {
+    "completedProblems": 1,
+    "pendingProblems": 1,
+    "totalProblems": 2,
+    "totalTimeSpent": "1h 30m"
+  },
+  "invalidRecords": [
+    {
+      "sourceIndex": 2,
+      "reason": "Missing title"
+    },
+    {
+      "sourceIndex": 4,
+      "reason": "Invalid status"
+    }
+  ]
 }
 ```

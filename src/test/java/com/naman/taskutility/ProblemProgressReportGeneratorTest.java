@@ -170,10 +170,15 @@ public class ProblemProgressReportGeneratorTest {
     @Test
     void shouldHandleEmptyJsonFile() {
 
+        String filePath = "src/main/resources/empty.json";
+
         ProblemJsonReader reader = new ProblemJsonReader();
 
+        ValidationResult validationResult =
+                reader.readProblems(filePath);
+
         List<Problem> problems =
-                reader.readProblems("src/main/resources/empty.json");
+                validationResult.getValidProblems();
 
         assertEquals(0, problems.size());
     }
