@@ -12,7 +12,7 @@ It reads problem data from JSON and CSV files and generates a progress report.
 - Count completed and pending problems
 - Show difficulty summary
 - Calculate total time spent
-- Basic JUnit tests added
+- Added unit and integration tests
 
 ## Project Structure
 
@@ -37,15 +37,15 @@ src
 Run:
 
 ```bash
-mvn exec:java -Dexec.args="src/main/resources/problems.json"
+mvn exec:java -Dexec.args="src/main/resources/problems.csv output/report.json"
 ```
 
 ## Run Tests
-
 Run:
 
 ```bash
 mvn test
+This runs both unit tests and integration tests.
 ```
 
 Requires Java 17
@@ -53,23 +53,35 @@ Requires Java 17
 ## Sample Output
 ```json
 {
-  "completedProblems": 3,
-  "pendingProblems": 2,
-  "totalProblems": 5,
-  "totalTimeSpent": "5h 45m",
-  "difficultySummary": {
-    "Easy": 1,
-    "Medium": 2,
-    "Hard": 2
-  },
-  "groupedResult": {
-    "Array": {
-      "completed": 1
+  "reportSummary" : {
+    "completedProblems" : 3,
+    "pendingProblems" : 2,
+    "totalProblems" : 5,
+    "totalTimeSpent" : "5h 45m",
+    "difficultySummary" : {
+      "Easy" : 1,
+      "Medium" : 2,
+      "Hard" : 2
     },
-    "Graph": {
-      "pending": 1
+    "groupedResult" : {
+      "Array" : {
+        "pending" : 1,
+        "completed" : 1
+      },
+      "Graph" : {
+        "completed" : 1
+      },
+      "Tree" : {
+        "pending" : 1
+      },
+      "DP" : {
+        "completed" : 1
+      }
     }
-  }
+  },
+  "invalidRecords" : [ ],
+  "validCount" : 5,
+  "invalidCount" : 0
 }
 ```
 ## Edge Cases Handled
@@ -103,6 +115,7 @@ Example:
 
 
 ```bash
+mvn exec:java -Dexec.args="src/main/resources/problems.json output/report.json"
 mvn exec:java -Dexec.args="src/main/resources/problems.csv output/report.json"
 ```
 ```
@@ -142,3 +155,13 @@ Generated report:
   "invalidCount" : 0
 }
 ```
+## Integration Tests
+
+The integration tests verify the complete application flow:
+
+- Read CSV/JSON input
+- Validate records
+- Generate progress report
+- Export report to JSON
+
+Tests generate fresh output files during execution and do not depend on any pre-existing report.json file.

@@ -18,7 +18,7 @@ public class ProblemCsvReader {
 
             String line;
 
-            // skip header row
+
             String header = reader.readLine();
 
             if (header == null) {
