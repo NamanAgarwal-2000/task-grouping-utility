@@ -45,8 +45,8 @@ Run:
 
 ```bash
 mvn test
-This runs both unit tests and integration tests.
 ```
+This runs both unit tests and integration tests
 
 Requires Java 17
 
