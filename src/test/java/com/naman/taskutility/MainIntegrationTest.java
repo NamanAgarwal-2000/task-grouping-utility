@@ -1,41 +1,29 @@
 package com.naman.taskutility;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.io.File;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import org.junit.jupiter.api.io.TempDir;
+import java.nio.file.Path;
+
 
 public class MainIntegrationTest {
+    private final PrintStream originalOut = System.out;
+    @TempDir
+    Path tempDir;
 
-    @BeforeEach
-    void cleanOutputFile() {
-
-        File outputDir = new File("output");
-
-        if (!outputDir.exists()) {
-            outputDir.mkdir();
-        }
-
-        File outputFile = new File("output/report.json");
-
-        if (outputFile.exists()) {
-            outputFile.delete();
-        }
-    }
     @Test
     void shouldGenerateReportFromCsv() throws Exception {
 
-        String[] args = {"src/main/resources/problems.csv", "output/report.json"};
+        Path outputFile = tempDir.resolve("report.json");
+
+        String[] args = {"src/main/resources/problems.csv",outputFile.toString()};
 
     Main.main(args);
-    File outputFile = new File("output/report.json");
-
-    assertTrue(outputFile.exists());
-    String content =Files.readString(Paths.get("output/report.json"));
+    assertTrue(Files.exists(outputFile));
+    String content = Files.readString(outputFile);
 
     assertTrue(content.contains("reportSummary"));
     assertTrue(content.contains("validCount"));
@@ -45,13 +33,13 @@ public class MainIntegrationTest {
     @Test
     void shouldGenerateReportFromJson() throws Exception {
 
-        String[] args = { "src/main/resources/problems.json",  "output/report.json"};
+        Path outputFile = tempDir.resolve("report.json");
+
+        String[] args = { "src/main/resources/problems.json",outputFile.toString()};
 
     Main.main(args);
-    File outputFile = new File("output/report.json");
-
-    assertTrue(outputFile.exists());
-    String content =Files.readString(Paths.get("output/report.json"));
+    assertTrue(Files.exists(outputFile));
+    String content = Files.readString(outputFile);
 
     assertTrue(content.contains("reportSummary"));
     assertTrue(content.contains("validCount"));
@@ -62,40 +50,49 @@ public class MainIntegrationTest {
     void shouldShowMessageForUnsupportedFileType() {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
 
-        String[] args = {"mple.txt"};
-        Main.main(args);
+        try {
+            System.setOut(new PrintStream(outputStream));
+            String[] args = {"mple.txt"};
+            Main.main(args);
 
-        String consoleOutput = outputStream.toString();
-        assertTrue(consoleOutput.contains("Unsupported file type"));
+            String consoleOutput = outputStream.toString();
+            assertTrue(consoleOutput.contains("Unsupported file type"));
+        } finally {
+            System.setOut(originalOut);
+        }
     }
     @Test
     void shouldShowUsageMessageWhenNoArgsProvided() {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
 
-        String[] args = {};
-        Main.main(args);
+        try {
+            System.setOut(new PrintStream(outputStream));
+            String[] args = {};
+            Main.main(args);
 
-        String consoleOutput = outputStream.toString();
-        assertTrue(consoleOutput.contains("Usage:"));
+            String consoleOutput = outputStream.toString();
+            assertTrue(consoleOutput.contains("Usage:"));
+        } finally {
+            System.setOut(originalOut);
+        }
     }
     @Test
     void shouldHandleMixedValidAndInvalidCsv() throws Exception {
 
-        String[] args = {"src/main/resources/mixed-problems.csv", "output/report.json"};
+        Path outputFile = tempDir.resolve("report.json");
+
+        String[] args = { "src/main/resources/mixed-problems.csv",outputFile.toString()};
 
         Main.main(args);
-        File outputFile = new File("output/report.json");
+        assertTrue(Files.exists(outputFile));
+        String content = Files.readString(outputFile);
 
-        assertTrue(outputFile.exists());
-
-        String content = Files.readString(Paths.get("output/report.json"));
-
-        assertTrue(content.contains("\"validCount\""));
-        assertTrue(content.contains("\"invalidCount\""));
-        assertTrue(content.contains("\"invalidRecords\""));
+        assertTrue(content.contains("\"validCount\" : 2"));
+        assertTrue(content.contains("\"invalidCount\" : 1"));
+        assertTrue(content.contains("\"completedProblems\" : 1"));
+        assertTrue(content.contains("\"pendingProblems\" : 1"));
+        assertTrue(content.contains("Missing category"));
     }
 }

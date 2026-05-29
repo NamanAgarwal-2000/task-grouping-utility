@@ -1,3 +1,4 @@
-title,difficulty,status,timeSpent,tag
-Arrays,Easy,completed,30,Array
-Graph Traversal,,pending,45,Graph
+title,category,difficulty,status,timeSpentMinutes
+Arrays,Array,Easy,completed,30
+Binary Tree,Tree,Medium,pending,60
+Graph Traversal,,Hard,completed,120
