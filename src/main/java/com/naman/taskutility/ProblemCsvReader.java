@@ -1,10 +1,12 @@
 package com.naman.taskutility;
 
-import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 
 public class ProblemCsvReader {
 
@@ -14,33 +16,40 @@ public class ProblemCsvReader {
         List<InvalidRecord> invalidRecords = new ArrayList<>();
 
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-
-            String line;
-
-
-            String header = reader.readLine();
-
-            if (header == null) {
-                return new ValidationResult(validProblems, invalidRecords);
-            }
+        try (
+                FileReader fileReader = new FileReader(filePath);
+                CSVParser parser = CSVFormat.DEFAULT
+                        .builder()
+                        .setHeader()
+                        .setSkipHeaderRecord(true)
+                        .build()
+                        .parse(fileReader)
+        ) {
 
             int rowNumber = 1;
 
-            while ((line = reader.readLine()) != null) {
+            List<String> requiredHeaders = List.of(
+                    "title",
+                    "category",
+                    "difficulty",
+                    "status",
+                    "timeSpentMinutes"
+            );
 
+            for (String header : requiredHeaders) {
+                if (!parser.getHeaderMap().containsKey(header)) {
+                    return new ValidationResult(validProblems, invalidRecords);
+                }
+            }
+
+            for (CSVRecord record : parser) {
                 rowNumber++;
 
-                String[] data = line.split(",");
-
-                if (data.length != 5) {
-                    invalidRecords.add(
-                            new InvalidRecord(rowNumber, "Malformed CSV row")
-                    );
-                    continue;
-                }
-
-                String title = data[0].trim();
+                String title = record.get("title").trim();
+                String category = record.get("category").trim();
+                String difficulty = record.get("difficulty").trim();
+                String status = record.get("status").trim();
+                String timeSpentValue = record.get("timeSpentMinutes").trim();
 
                 if (title.isBlank()) {
                     invalidRecords.add(
@@ -48,15 +57,13 @@ public class ProblemCsvReader {
                     );
                     continue;
                 }
-                String category = data[1].trim();
+
                 if (category.isBlank()) {
                     invalidRecords.add(
                             new InvalidRecord(rowNumber, "Missing category")
                     );
                     continue;
                 }
-                String difficulty = data[2].trim();
-                String status = data[3].trim();
 
                 if (!status.equalsIgnoreCase("done")
                         && !status.equalsIgnoreCase("completed")
@@ -75,20 +82,24 @@ public class ProblemCsvReader {
                 int timeSpentMinutes;
 
                 try {
-                    timeSpentMinutes = Integer.parseInt(data[4].trim());
+                    timeSpentMinutes = Integer.parseInt(timeSpentValue);
                 } catch (NumberFormatException e) {
                     invalidRecords.add(
                             new InvalidRecord(rowNumber, "Invalid time")
                     );
                     continue;
                 }
+
+                if (timeSpentMinutes < 0) {
+                    invalidRecords.add(
+                            new InvalidRecord(rowNumber, "Invalid time")
+                    );
+                    continue;
+                }
+
                 if (status.equalsIgnoreCase("done")) {
                     status = "completed";
                 }
-                if (status.equalsIgnoreCase("completed")) {
-                    status = "completed";
-                }
-
 
                 Problem problem = new Problem(
                         title,
@@ -99,7 +110,7 @@ public class ProblemCsvReader {
                 );
 
                 validProblems.add(problem);
-                }
+            }
 
         } catch (IOException e) {
             System.out.println("Error reading CSV file");

@@ -84,6 +84,33 @@ Requires Java 17
   "invalidCount" : 0
 }
 ```
+## Expected CSV Format
+
+The following headers are mandatory:
+
+```csv
+title,category,difficulty,status,timeSpentMinutes
+```
+
+Example:
+
+```csv
+Two Sum,Array,Easy,done,30
+Binary Tree,Tree,Medium,pending,60
+Graph Traversal,Graph,Hard,completed,120
+```
+
+### Quoted Values
+
+Fields containing commas should be wrapped in quotes.
+
+Example:
+
+```csv
+title,category,difficulty,status,timeSpentMinutes
+"Graph, BFS Basics",Graph,Medium,completed,45
+```
+
 ## Edge Cases Handled
 
 - Empty input

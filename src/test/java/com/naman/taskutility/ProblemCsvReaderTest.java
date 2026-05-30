@@ -70,4 +70,43 @@ public class ProblemCsvReaderTest {
 
         assertEquals(0, problems.size());
     }
+    @Test
+    void shouldHandleWrongHeaders() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result =
+                reader.readProblems("src/main/resources/wrong-headers.csv");
+
+        assertEquals(
+                0,
+                result.getValidProblems().size()
+        );
+    }
+    @Test
+    void shouldHandleMissingHeaders() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result =
+                reader.readProblems("src/main/resources/missing-header.csv");
+
+        assertEquals(0, result.getValidProblems().size());
+        assertEquals(0, result.getInvalidRecords().size());
+    }
+    @Test
+    void shouldReadQuotedValues() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result =
+                reader.readProblems("src/main/resources/quoted-values.csv");
+
+        assertEquals(
+                "Graph, BFS Basics",
+                result.getValidProblems()
+                        .get(0)
+                        .getTitle()
+        );
+    }
 }
