@@ -1,31 +1,19 @@
 {
   "reportSummary" : {
-    "completedProblems" : 3,
-    "pendingProblems" : 2,
-    "totalProblems" : 5,
-    "totalTimeSpent" : "5h 45m",
-    "difficultySummary" : {
-      "Easy" : 1,
-      "Medium" : 2,
-      "Hard" : 2
-    },
-    "groupedResult" : {
-      "Array" : {
-        "pending" : 1,
-        "completed" : 1
-      },
-      "Graph" : {
-        "completed" : 1
-      },
-      "Tree" : {
-        "pending" : 1
-      },
-      "DP" : {
-        "completed" : 1
-      }
-    }
+    "completedProblems" : 0,
+    "pendingProblems" : 0,
+    "totalProblems" : 0,
+    "totalTimeSpent" : "0h 0m",
+    "difficultySummary" : { },
+    "groupedResult" : { }
   },
-  "invalidRecords" : [ ],
-  "validCount" : 5,
-  "invalidCount" : 0
+  "invalidRecords" : [ {
+    "sourceIndex" : 2,
+    "reason" : "Invalid status"
+  }, {
+    "sourceIndex" : 3,
+    "reason" : "Missing category"
+  } ],
+  "validCount" : 0,
+  "invalidCount" : 2
 }
