@@ -38,12 +38,17 @@ public class ProblemCsvReader {
 
             for (String header : requiredHeaders) {
                 if (!parser.getHeaderMap().containsKey(header)) {
+                    invalidRecords.add(new InvalidRecord(1, "Missing required header: " + header));
                     return new ValidationResult(validProblems, invalidRecords);
                 }
             }
 
             for (CSVRecord record : parser) {
                 rowNumber++;
+                if (record.size() < requiredHeaders.size()) {
+                    invalidRecords.add( new InvalidRecord( rowNumber,"Incomplete CSV row"));
+                    continue;
+                }
 
                 String title = record.get("title").trim();
                 String category = record.get("category").trim();

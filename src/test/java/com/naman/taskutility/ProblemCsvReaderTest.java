@@ -88,11 +88,11 @@ public class ProblemCsvReaderTest {
 
         ProblemCsvReader reader = new ProblemCsvReader();
 
-        ValidationResult result =
-                reader.readProblems("src/main/resources/missing-header.csv");
+        ValidationResult result = reader.readProblems("src/main/resources/missing-header.csv");
 
         assertEquals(0, result.getValidProblems().size());
-        assertEquals(0, result.getInvalidRecords().size());
+        assertEquals(1, result.getInvalidRecords().size());
+        assertEquals("Missing required header: timeSpentMinutes", result.getInvalidRecords().get(0).getReason());
     }
     @Test
     void shouldReadQuotedValues() {
@@ -106,7 +106,32 @@ public class ProblemCsvReaderTest {
                 "Graph, BFS Basics",
                 result.getValidProblems()
                         .get(0)
-                        .getTitle()
-        );
+                        .getTitle());
+    }
+    @Test
+    void shouldReportMissingHeader() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result =
+                reader.readProblems("src/main/resources/missing-header.csv");
+
+        assertEquals(1, result.getInvalidRecords().size());
+
+        assertEquals(
+                "Missing required header: timeSpentMinutes",
+                result.getInvalidRecords().get(0).getReason());
+    }
+    @Test
+    void shouldHandleMalformedCsvRow() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result =
+                reader.readProblems("src/main/resources/malformed-row.csv");
+
+        assertEquals(1, result.getValidProblems().size());
+        assertEquals(1, result.getInvalidRecords().size());
+        assertEquals("Incomplete CSV row", result.getInvalidRecords().get(0).getReason());
     }
 }
