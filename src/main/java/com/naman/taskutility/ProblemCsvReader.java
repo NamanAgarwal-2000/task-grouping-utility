@@ -45,7 +45,7 @@ public class ProblemCsvReader {
 
             for (CSVRecord record : parser) {
                 rowNumber++;
-                if (record.size() < requiredHeaders.size()) {
+                if (record.size() != requiredHeaders.size()) {
                     invalidRecords.add( new InvalidRecord( rowNumber,"Incomplete CSV row"));
                     continue;
                 }

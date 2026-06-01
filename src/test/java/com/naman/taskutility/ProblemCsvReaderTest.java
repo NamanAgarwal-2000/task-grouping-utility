@@ -132,4 +132,14 @@ public class ProblemCsvReaderTest {
         assertEquals(1, result.getInvalidRecords().size());
         assertEquals("Incomplete CSV row", result.getInvalidRecords().get(0).getReason());
     }
+    @Test
+    void shouldHandleExtraColumnCsvRow() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+        ValidationResult result =reader.readProblems("src/main/resources/extra-column.csv");
+
+        assertEquals(0, result.getValidProblems().size());
+        assertEquals(1, result.getInvalidRecords().size());
+        assertEquals( "Incomplete CSV row",result.getInvalidRecords().get(0).getReason());
+    }
 }
