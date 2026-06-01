@@ -1,7 +1,5 @@
 package com.naman.taskutility;
 
-import com.naman.taskutility.Problem;
-import com.naman.taskutility.ProblemCsvReader;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -69,5 +67,76 @@ public class ProblemCsvReaderTest {
         List<Problem> problems = result.getValidProblems();
 
         assertEquals(0, problems.size());
+    }
+    @Test
+    void shouldHandleWrongHeaders() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result =
+                reader.readProblems("src/main/resources/wrong-headers.csv");
+
+        assertEquals(
+                0,
+                result.getValidProblems().size()
+        );
+    }
+    @Test
+    void shouldHandleMissingHeaders() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result = reader.readProblems("src/main/resources/missing-header.csv");
+
+        assertEquals(0, result.getValidProblems().size());
+        assertEquals(1, result.getInvalidRecords().size());
+        assertEquals("Missing required header: timeSpentMinutes", result.getInvalidRecords().get(0).getReason());
+    }
+    @Test
+    void shouldReadQuotedValues() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result =
+                reader.readProblems("src/main/resources/quoted-values.csv");
+
+        assertEquals(
+                "Graph, BFS Basics",
+                result.getValidProblems()
+                        .get(0)
+                        .getTitle());
+    }
+    @Test
+    void shouldReportMissingHeader() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result =
+                reader.readProblems("src/main/resources/missing-header.csv");
+
+        assertEquals(1, result.getInvalidRecords().size());
+        assertEquals("Missing required header: timeSpentMinutes",result.getInvalidRecords().get(0).getReason());
+    }
+    @Test
+    void shouldHandleMalformedCsvRow() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+
+        ValidationResult result =
+                reader.readProblems("src/main/resources/malformed-row.csv");
+
+        assertEquals(1, result.getValidProblems().size());
+        assertEquals(1, result.getInvalidRecords().size());
+        assertEquals("Incomplete CSV row", result.getInvalidRecords().get(0).getReason());
+    }
+    @Test
+    void shouldHandleExtraColumnCsvRow() {
+
+        ProblemCsvReader reader = new ProblemCsvReader();
+        ValidationResult result =reader.readProblems("src/main/resources/extra-column.csv");
+
+        assertEquals(0, result.getValidProblems().size());
+        assertEquals(1, result.getInvalidRecords().size());
+        assertEquals( "Incomplete CSV row",result.getInvalidRecords().get(0).getReason());
     }
 }
