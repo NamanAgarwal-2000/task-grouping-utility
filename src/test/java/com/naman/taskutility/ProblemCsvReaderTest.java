@@ -115,10 +115,7 @@ public class ProblemCsvReaderTest {
                 reader.readProblems("src/main/resources/missing-header.csv");
 
         assertEquals(1, result.getInvalidRecords().size());
-
-        assertEquals(
-                "Missing required header: timeSpentMinutes",
-                result.getInvalidRecords().get(0).getReason());
+        assertEquals("Missing required header: timeSpentMinutes",result.getInvalidRecords().get(0).getReason());
     }
     @Test
     void shouldHandleMalformedCsvRow() {
