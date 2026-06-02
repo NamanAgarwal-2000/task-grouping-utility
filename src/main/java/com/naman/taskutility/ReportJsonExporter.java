@@ -17,8 +17,10 @@ public class ReportJsonExporter {
                     .writeValue(new File(outputPath), report);
 
         } catch (IOException e) {
-
-            System.out.println("Failed to export report");
+            throw new RuntimeException(
+                    "Failed to export report: " + outputPath,
+                    e
+            );
         }
     }
 }

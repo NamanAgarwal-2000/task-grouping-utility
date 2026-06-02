@@ -46,7 +46,7 @@ public class ProblemCsvReader {
             for (CSVRecord record : parser) {
                 rowNumber++;
                 if (record.size() != requiredHeaders.size()) {
-                    invalidRecords.add( new InvalidRecord( rowNumber,"Incomplete CSV row"));
+                    invalidRecords.add(new InvalidRecord(rowNumber, "Incomplete CSV row"));
                     continue;
                 }
 
@@ -116,12 +116,16 @@ public class ProblemCsvReader {
 
                 validProblems.add(problem);
             }
-
-        } catch (IOException e) {
-            System.out.println("Error reading CSV file");
-            e.printStackTrace();
         }
 
-        return new ValidationResult(validProblems, invalidRecords);
+        catch(IOException e) {
+                throw new RuntimeException(
+                        "Failed to read CSV file: " + filePath,
+                        e
+                );
+            }
+            return new ValidationResult(validProblems, invalidRecords);
+        }
+
     }
-}
+
