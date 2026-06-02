@@ -63,7 +63,12 @@ public class MainIntegrationTest {
 
         try {
             System.setOut(new PrintStream(outputStream));
-            String[] args = {"mple.txt"};
+            String[] args = {
+                    "--input",
+                    "sample.txt",
+                    "--output",
+                    "output/report.json"
+            };
             Main app = new Main();
 
             int exitCode = app.run(args);
@@ -237,5 +242,23 @@ public class MainIntegrationTest {
         });
 
         assertEquals(1, exitCode);
+    }
+    @Test
+    void shouldShowMessageWhenOutputFileMissing() {
+        Main app = new Main();
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        PrintStream originalOut = System.out;
+
+        System.setOut(new PrintStream(output));
+
+        int exitCode = app.run(new String[]{
+                "--input", "src/main/resources/problems.csv"
+        });
+
+        System.setOut(originalOut);
+
+        assertEquals(1, exitCode);
+        assertTrue(output.toString().contains("Missing output file"));
     }
 }

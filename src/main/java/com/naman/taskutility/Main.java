@@ -52,6 +52,10 @@ public class Main {
             System.out.println("Missing input file");
             return 1;
         }
+        if (options.getOutputFile() == null) {
+            System.out.println("Missing output file");
+            return 1;
+        }
         String filePath = options.getInputFile();
 
         List<Problem> problems;
