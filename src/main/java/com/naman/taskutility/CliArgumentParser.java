@@ -46,6 +46,56 @@ public class CliArgumentParser {
                     options.setOutputFile(args[++i]);
                     break;
 
+                case "--status":
+
+                    if (i + 1 >= args.length) {
+                        throw new IllegalArgumentException(
+                                "Missing value for --status");
+                    }
+
+                    options.setStatus(args[++i]);
+                    break;
+
+                case "--category":
+
+                    if (i + 1 >= args.length) {
+                        throw new IllegalArgumentException(
+                                "Missing value for --category");
+                    }
+
+                    options.setCategory(args[++i]);
+                    break;
+
+                case "--difficulty":
+
+                    if (i + 1 >= args.length) {
+                        throw new IllegalArgumentException(
+                                "Missing value for --difficulty");
+                    }
+
+                    options.setDifficulty(args[++i]);
+                    break;
+
+                case "--sort-by":
+
+                    if (i + 1 >= args.length) {
+                        throw new IllegalArgumentException(
+                                "Missing value for --sort-by");
+                    }
+
+                    options.setSortBy(args[++i]);
+                    break;
+
+                case "--sort-order":
+
+                    if (i + 1 >= args.length) {
+                        throw new IllegalArgumentException(
+                                "Missing value for --sort-order");
+                    }
+
+                    options.setSortOrder(args[++i]);
+                    break;
+
                 default:
                     throw new IllegalArgumentException(
                             "Unknown option: " + args[i]);
