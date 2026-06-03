@@ -1,19 +1,26 @@
 {
   "reportSummary" : {
     "completedProblems" : 0,
-    "pendingProblems" : 0,
-    "totalProblems" : 0,
-    "totalTimeSpent" : "0h 0m",
-    "difficultySummary" : { },
-    "groupedResult" : { }
+    "pendingProblems" : 1,
+    "totalProblems" : 1,
+    "totalTimeSpent" : "1h 0m",
+    "difficultySummary" : {
+      "Medium" : 1
+    },
+    "groupedResult" : {
+      "Tree" : {
+        "pending" : 1
+      }
+    }
   },
-  "invalidRecords" : [ {
-    "sourceIndex" : 2,
-    "reason" : "Invalid status"
-  }, {
-    "sourceIndex" : 3,
-    "reason" : "Missing category"
+  "invalidRecords" : [ ],
+  "problems" : [ {
+    "title" : "Binary Tree",
+    "category" : "Tree",
+    "difficulty" : "Medium",
+    "status" : "pending",
+    "timeSpentMinutes" : 60
   } ],
-  "validCount" : 0,
-  "invalidCount" : 2
+  "validCount" : 1,
+  "invalidCount" : 0
 }

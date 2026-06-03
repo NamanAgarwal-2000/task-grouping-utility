@@ -125,7 +125,7 @@ public class Main {
                             report,
                             validationResult.getInvalidRecords(),
                             problems,
-                            validationResult.getValidProblems().size(),
+                            problems.size(),
                             validationResult.getInvalidRecords().size()
                     );
 

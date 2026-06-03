@@ -246,10 +246,11 @@ title,category,difficulty,status,timeSpentMinutes
 ```
 ### Report Counts
 
-validCount and invalidCount represent counts from the validated input data before CLI filters are applied.
+validCount represents the number of valid records after applying CLI filters.
+
+invalidCount represents the total invalid records found during validation and is not affected by filtering.
 
 The problems array and reportSummary values reflect the final filtered and sorted result after applying CLI options.
-
 ## Validation & Edge Cases
 
 The application handles:

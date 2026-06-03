@@ -633,7 +633,7 @@ public class MainIntegrationTest {
         assertNotEquals(unsortedFirst, sortedFirst);
     }
     @Test
-    void shouldKeepOriginalValidCountWhenStatusFilterApplied() throws Exception {
+    void shouldUseFilteredValidCountWhenStatusFilterApplied() throws Exception {
 
         Path outputFile = Files.createTempFile("report", ".json");
 
@@ -655,7 +655,7 @@ public class MainIntegrationTest {
                         .path("totalProblems")
                         .asInt());
 
-        assertEquals(3,
+        assertEquals(1,
                 root.path("validCount")
                         .asInt());
 
