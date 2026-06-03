@@ -63,16 +63,16 @@ This runs both unit and integration tests.
 
 ## CLI Options
 
-| Option       | Description                             |
-| ------------ | --------------------------------------- |
-| --input      | Input CSV or JSON file path             |
-| --output     | Output JSON report file path            |
-| --help       | Show help information                   |
-| --status     | Filter by status (completed/pending)    |
-| --category   | Filter by category                      |
-| --difficulty | Filter by difficulty (Easy/Medium/Hard) |
-| --sort-by    | Sort by title, time, or difficulty      |
-| --sort-order | Sort order (asc/desc)                   |
+| Option       | Description                              |
+| ------------ |------------------------------------------|
+| --input      | Input CSV or JSON file path              |
+| --output     | Output JSON report file path             |
+| --help       | Show help information                    |
+| --status     | Filter by status (completed/pending/all) |
+| --category   | Filter by category                       |
+| --difficulty | Filter by difficulty (Easy/Medium/Hard)  |
+| --sort-by    | Sort by title, time, or difficulty       |
+| --sort-order | Sort order (asc/desc)                    |
 
 ## Sample Commands
 
@@ -221,11 +221,34 @@ title,category,difficulty,status,timeSpentMinutes
     }
   },
   "invalidRecords" : [ ],
+  "problems" : [ {
+    "title" : "Two Sum",
+    "category" : "Array",
+    "difficulty" : "Easy",
+    "status" : "completed",
+    "timeSpentMinutes" : 30
+  }, {
+    "title" : "Binary Tree",
+    "category" : "Tree",
+    "difficulty" : "Medium",
+    "status" : "pending",
+    "timeSpentMinutes" : 60
+  }, {
+    "title" : "Graph Traversal",
+    "category" : "Graph",
+    "difficulty" : "Hard",
+    "status" : "completed",
+    "timeSpentMinutes" : 120
+  } ],
   "validCount" : 3,
   "invalidCount" : 0
 }
-
 ```
+### Report Counts
+
+validCount and invalidCount represent counts from the validated input data before CLI filters are applied.
+
+The problems array and reportSummary values reflect the final filtered and sorted result after applying CLI options.
 
 ## Validation & Edge Cases
 
