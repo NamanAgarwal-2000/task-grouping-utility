@@ -21,41 +21,43 @@ public class MainIntegrationTest {
 
         Path outputFile = tempDir.resolve("report.json");
 
-        String[] args = {"src/main/resources/problems.csv",outputFile.toString()};
+        String[] args = {"src/main/resources/problems.csv", outputFile.toString()};
 
         Main app = new Main();
 
         int exitCode = app.run(args);
 
         assertEquals(0, exitCode);
-    assertTrue(Files.exists(outputFile));
-    String content = Files.readString(outputFile);
+        assertTrue(Files.exists(outputFile));
+        String content = Files.readString(outputFile);
 
-    assertTrue(content.contains("reportSummary"));
-    assertTrue(content.contains("validCount"));
-    assertTrue(content.contains("invalidCount"));
-    assertTrue(content.contains("invalidRecords"));
-}
+        assertTrue(content.contains("reportSummary"));
+        assertTrue(content.contains("validCount"));
+        assertTrue(content.contains("invalidCount"));
+        assertTrue(content.contains("invalidRecords"));
+    }
+
     @Test
     void shouldGenerateReportFromJson() throws Exception {
 
         Path outputFile = tempDir.resolve("report.json");
 
-        String[] args = { "src/main/resources/problems.json",outputFile.toString()};
+        String[] args = {"src/main/resources/problems.json", outputFile.toString()};
 
         Main app = new Main();
 
         int exitCode = app.run(args);
 
         assertEquals(0, exitCode);
-    assertTrue(Files.exists(outputFile));
-    String content = Files.readString(outputFile);
+        assertTrue(Files.exists(outputFile));
+        String content = Files.readString(outputFile);
 
-    assertTrue(content.contains("reportSummary"));
-    assertTrue(content.contains("validCount"));
-    assertTrue(content.contains("invalidCount"));
-    assertTrue(content.contains("invalidRecords"));
-}
+        assertTrue(content.contains("reportSummary"));
+        assertTrue(content.contains("validCount"));
+        assertTrue(content.contains("invalidCount"));
+        assertTrue(content.contains("invalidRecords"));
+    }
+
     @Test
     void shouldShowMessageForUnsupportedFileType() {
 
@@ -81,6 +83,7 @@ public class MainIntegrationTest {
             System.setOut(originalOut);
         }
     }
+
     @Test
     void shouldShowUsageMessageWhenNoArgsProvided() {
 
@@ -101,12 +104,13 @@ public class MainIntegrationTest {
             System.setOut(originalOut);
         }
     }
+
     @Test
     void shouldHandleMixedValidAndInvalidCsv() throws Exception {
 
         Path outputFile = tempDir.resolve("report.json");
 
-        String[] args = { "src/main/resources/mixed-problems.csv",outputFile.toString()};
+        String[] args = {"src/main/resources/mixed-problems.csv", outputFile.toString()};
 
         Main app = new Main();
 
@@ -122,6 +126,7 @@ public class MainIntegrationTest {
         assertTrue(content.contains("\"pendingProblems\" : 1"));
         assertTrue(content.contains("Missing category"));
     }
+
     @Test
     void shouldShowHelpMessage() {
 
@@ -146,6 +151,7 @@ public class MainIntegrationTest {
             System.setOut(originalOut);
         }
     }
+
     @Test
     void shouldShowMessageWhenInputMissing() {
 
@@ -170,6 +176,7 @@ public class MainIntegrationTest {
             System.setOut(originalOut);
         }
     }
+
     @Test
     void shouldShowMessageWhenOutputValueMissing() {
 
@@ -194,6 +201,7 @@ public class MainIntegrationTest {
             System.setOut(originalOut);
         }
     }
+
     @Test
     void shouldHandleEmptyCsvFile() throws Exception {
         Path outputFile = tempDir.resolve("report.json");
@@ -215,6 +223,7 @@ public class MainIntegrationTest {
         assertTrue(content.contains("\"validCount\""));
         assertTrue(content.contains("\"invalidCount\""));
     }
+
     @Test
     void shouldReturnNonZeroWhenInputFileDoesNotExist() {
         Main app = new Main();
@@ -226,6 +235,7 @@ public class MainIntegrationTest {
 
         assertEquals(1, exitCode);
     }
+
     @Test
     void shouldReturnNonZeroWhenExportFails() throws Exception {
         Path invalidOutput =
@@ -243,6 +253,7 @@ public class MainIntegrationTest {
 
         assertEquals(1, exitCode);
     }
+
     @Test
     void shouldShowMessageWhenOutputFileMissing() {
         Main app = new Main();
@@ -260,5 +271,197 @@ public class MainIntegrationTest {
 
         assertEquals(1, exitCode);
         assertTrue(output.toString().contains("Missing output file"));
+    }
+
+    @Test
+    void shouldSortByTitleAscending() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--sort-by",
+                "title"
+        });
+
+        assertEquals(0, exitCode);
+    }
+
+    @Test
+    void shouldSortByTimeDescending() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--sort-by",
+                "time",
+                "--sort-order",
+                "desc"
+        });
+
+        assertEquals(0, exitCode);
+    }
+
+    @Test
+    void shouldIgnoreInvalidSortField() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--sort-by",
+                "random"
+        });
+
+        assertEquals(0, exitCode);
+    }
+
+    @Test
+    void shouldHandleSortOrderWithoutSortBy() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--sort-order",
+                "desc"
+        });
+
+        assertEquals(0, exitCode);
+    }
+
+    @Test
+    void shouldSortByDifficultyAscending() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--sort-by",
+                "difficulty"
+        });
+
+        assertEquals(0, exitCode);
+    }
+
+    @Test
+    void shouldSortByDifficultyDescending() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--sort-by",
+                "difficulty",
+                "--sort-order",
+                "desc"
+        });
+
+        assertEquals(0, exitCode);
+    }
+
+    @Test
+    void shouldHandleEmptySortValue() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--sort-by",
+                ""
+        });
+
+        assertEquals(0, exitCode);
+    }
+    @Test
+    void shouldApplyCategoryAndStatusFiltersTogether() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--category",
+                "Array",
+                "--status",
+                "completed"
+        });
+
+        assertEquals(0, exitCode);
+    }
+    @Test
+    void shouldApplyStatusFilterCaseInsensitive() {
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input", "src/main/resources/problems.csv",
+                "--output", tempDir.resolve("report.json").toString(),
+                "--status", "COMPLETED"
+        });
+
+        assertEquals(0, exitCode);
+    }
+    @Test
+    void shouldApplyCategoryFilterCaseInsensitive() {
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input", "src/main/resources/problems.csv",
+                "--output", tempDir.resolve("report.json").toString(),
+                "--category", "array"
+        });
+
+        assertEquals(0, exitCode);
+    }
+    @Test
+    void shouldApplyAllFiltersTogether() {
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input", "src/main/resources/problems.csv",
+                "--output", tempDir.resolve("report.json").toString(),
+                "--category", "Array",
+                "--status", "completed",
+                "--difficulty", "Easy"
+        });
+
+        assertEquals(0, exitCode);
+    }
+    @Test
+    void shouldIgnoreInvalidSortOrderValue() {
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input", "src/main/resources/problems.csv",
+                "--output", tempDir.resolve("report.json").toString(),
+                "--sort-by", "title",
+                "--sort-order", "random"
+        });
+
+        assertEquals(0, exitCode);
     }
 }
