@@ -14,7 +14,11 @@ It reads problem data from JSON and CSV files and generates a progress report.
 - Calculate total time spent
 - Added unit and integration tests
 
-## Project Structure
+## Build
+
+```bash
+mvn clean package
+```
 
 ```
 src
@@ -31,24 +35,26 @@ src
 - Problem.java
 - ProblemJsonReader.java
 - ProblemProgressReportGenerator.java
+- CliArgumentParser.java
+- CliOptions.java
+- ProblemCsvReader.java
+- ReportJsonExporter.java
 
 ## Run Project
 
-Run:
+Run using CLI options:
 
 ```bash
-mvn exec:java -Dexec.args="src/main/resources/problems.csv output/report.json"
+java -jar target/task-utility-1.0-SNAPSHOT.jar --input src/main/resources/problems.csv --output output/report.json
 ```
-
-## Run Tests
-Run:
+Run Tests:
 
 ```bash
 mvn test
 ```
 This runs both unit tests and integration tests
 
-Requires Java 17
+**Requires Java 17**
 
 ## Sample Output
 ```json
@@ -84,7 +90,29 @@ Requires Java 17
   "invalidCount" : 0
 }
 ```
-## Expected CSV Format
+## CLI Options
+
+| Option | Description |
+|----------|-------------|
+| --input | Input CSV or JSON file path |
+| --output | Output JSON report file path |
+| --help | Show help information |
+
+## Sample Commands
+
+Show help:
+
+```bash
+java -jar target/task-utility-1.0-SNAPSHOT.jar --help
+```
+Run with CSV input:
+```bash
+java -jar target/task-utility-1.0-SNAPSHOT.jar --input src/main/resources/problems.csv --output output/report.json
+```
+Run with JSON input:
+```bash
+java -jar target/task-utility-1.0-SNAPSHOT.jar --input src/main/resources/problems.json --output output/report.json
+```
 
 The following headers are mandatory:
 
@@ -117,7 +145,6 @@ title,category,difficulty,status,timeSpentMinutes
 - Null category
 - Blank status
 - Missing values
-
 - Invalid CSV rows
 - Invalid number in CSV
 - Negative time handling
@@ -125,25 +152,16 @@ title,category,difficulty,status,timeSpentMinutes
 - Missing category validation with invalid record reporting
 ---
 
-## New Features Added
-
-- Added CSV input support
-- Added JSON report export
-- Auto-detect input type using file extension
-- Graceful handling for invalid records
-- Added tests for CSV and JSON support
-- Added invalid record reporting support
-
----
-
 ## Export JSON Report
 
-Example:
-
-
+Examples:
+### JSON Input
 ```bash
-mvn exec:java -Dexec.args="src/main/resources/problems.json output/report.json"
-mvn exec:java -Dexec.args="src/main/resources/problems.csv output/report.json"
+java -jar target/task-utility-1.0-SNAPSHOT.jar --input src/main/resources/problems.json --output output/report.json
+```
+### CSV Input
+```bash
+java -jar target/task-utility-1.0-SNAPSHOT.jar --input src/main/resources/problems.csv --output output/report.json
 ```
 
 Generated report:
@@ -190,4 +208,4 @@ The integration tests verify the complete application flow:
 - Generate progress report
 - Export report to JSON
 
-Tests generate fresh output files during execution and do not depend on any pre-existing report.json file.
+Tests generate fresh output files during execution and do not depend on any pre-existing report file.
