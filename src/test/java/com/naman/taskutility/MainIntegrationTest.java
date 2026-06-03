@@ -1,14 +1,16 @@
 package com.naman.taskutility;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.nio.file.Files;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import org.junit.jupiter.api.io.TempDir;
 import java.nio.file.Path;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class MainIntegrationTest {
@@ -323,7 +325,7 @@ public class MainIntegrationTest {
                 "random"
         });
 
-        assertEquals(0, exitCode);
+        assertNotEquals(0, exitCode);
     }
 
     @Test
@@ -340,7 +342,7 @@ public class MainIntegrationTest {
                 "desc"
         });
 
-        assertEquals(0, exitCode);
+        assertNotEquals(0, exitCode);
     }
 
     @Test
@@ -393,8 +395,9 @@ public class MainIntegrationTest {
                 ""
         });
 
-        assertEquals(0, exitCode);
+        assertNotEquals(0, exitCode);
     }
+
     @Test
     void shouldApplyCategoryAndStatusFiltersTogether() {
 
@@ -413,6 +416,7 @@ public class MainIntegrationTest {
 
         assertEquals(0, exitCode);
     }
+
     @Test
     void shouldApplyStatusFilterCaseInsensitive() {
         Main app = new Main();
@@ -425,6 +429,7 @@ public class MainIntegrationTest {
 
         assertEquals(0, exitCode);
     }
+
     @Test
     void shouldApplyCategoryFilterCaseInsensitive() {
         Main app = new Main();
@@ -437,6 +442,7 @@ public class MainIntegrationTest {
 
         assertEquals(0, exitCode);
     }
+
     @Test
     void shouldApplyAllFiltersTogether() {
         Main app = new Main();
@@ -451,6 +457,7 @@ public class MainIntegrationTest {
 
         assertEquals(0, exitCode);
     }
+
     @Test
     void shouldIgnoreInvalidSortOrderValue() {
         Main app = new Main();
@@ -462,6 +469,206 @@ public class MainIntegrationTest {
                 "--sort-order", "random"
         });
 
+        assertNotEquals(0, exitCode);
+    }
+
+    @Test
+    void shouldNotFilterWhenStatusIsAll() throws Exception {
+
+        Main app = new Main();
+
+        Path outputFile =
+                tempDir.resolve("report.json");
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                outputFile.toString(),
+                "--status",
+                "all"
+        });
+
         assertEquals(0, exitCode);
+
+        String report =
+                Files.readString(outputFile);
+
+        assertTrue(report.contains("\"totalProblems\" : 3"));
+        assertTrue(report.contains("\"validCount\" : 3"));
+    }
+    @Test
+    void shouldReturnNonZeroForInvalidStatusValue() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--status",
+                "bogus"
+        });
+
+        assertNotEquals(0, exitCode);
+    }
+    @Test
+    void shouldReturnNonZeroForInvalidDifficultyValue() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--difficulty",
+                "impossible"
+        });
+
+        assertNotEquals(0, exitCode);
+    }
+    @Test
+    void shouldReturnNonZeroForInvalidSortByValue() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--sort-by",
+                "random"
+        });
+
+        assertNotEquals(0, exitCode);
+    }
+    @Test
+    void shouldReturnNonZeroForInvalidSortOrderValue() {
+
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input",
+                "src/main/resources/problems.csv",
+                "--output",
+                tempDir.resolve("report.json").toString(),
+                "--sort-order",
+                "sideways"
+        });
+
+        assertNotEquals(0, exitCode);
+    }
+
+    @Test
+    void shouldExportProblemsSortedByTitleAscending() throws Exception {
+        Path outputFile = tempDir.resolve("report-sorted-title.json");
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input", "src/main/resources/problems.csv",
+                "--output", outputFile.toString(),
+                "--sort-by", "title"
+        });
+
+        assertEquals(0, exitCode);
+        JsonNode problems = new ObjectMapper()
+                .readTree(Files.readString(outputFile))
+                .get("problems");
+
+        assertEquals("Binary Tree", problems.get(0).get("title").asText());
+        assertEquals("Graph Traversal", problems.get(1).get("title").asText());
+        assertEquals("Two Sum", problems.get(2).get("title").asText());
+    }
+
+    @Test
+    void shouldExportProblemsSortedByTimeDescending() throws Exception {
+        Path outputFile = tempDir.resolve("report-sorted-time.json");
+        Main app = new Main();
+
+        int exitCode = app.run(new String[]{
+                "--input", "src/main/resources/problems.csv",
+                "--output", outputFile.toString(),
+                "--sort-by", "time",
+                "--sort-order", "desc"
+        });
+
+        assertEquals(0, exitCode);
+        JsonNode problems = new ObjectMapper()
+                .readTree(Files.readString(outputFile))
+                .get("problems");
+
+        assertEquals("Graph Traversal", problems.get(0).get("title").asText());
+        assertEquals(120, problems.get(0).get("timeSpentMinutes").asInt());
+        assertEquals("Binary Tree", problems.get(1).get("title").asText());
+        assertEquals("Two Sum", problems.get(2).get("title").asText());
+    }
+
+    @Test
+    void shouldExportDifferentOrderWhenSortedVsUnsorted() throws Exception {
+        Path unsortedFile = tempDir.resolve("report-unsorted.json");
+        Path sortedFile = tempDir.resolve("report-sorted.json");
+        Main app = new Main();
+
+        assertEquals(0, app.run(new String[]{
+                "--input", "src/main/resources/problems.csv",
+                "--output", unsortedFile.toString()
+        }));
+        assertEquals(0, app.run(new String[]{
+                "--input", "src/main/resources/problems.csv",
+                "--output", sortedFile.toString(),
+                "--sort-by", "title"
+        }));
+
+        ObjectMapper mapper = new ObjectMapper();
+        String unsortedFirst = mapper.readTree(Files.readString(unsortedFile))
+                .get("problems").get(0).get("title").asText();
+        String sortedFirst = mapper.readTree(Files.readString(sortedFile))
+                .get("problems").get(0).get("title").asText();
+
+        assertEquals("Two Sum", unsortedFirst);
+        assertEquals("Binary Tree", sortedFirst);
+        assertNotEquals(unsortedFirst, sortedFirst);
+    }
+    @Test
+    void shouldKeepOriginalValidCountWhenStatusFilterApplied() throws Exception {
+
+        Path outputFile = Files.createTempFile("report", ".json");
+
+        Main main = new Main();
+
+        int exitCode = main.run(new String[]{
+                "--input", "src/main/resources/problems.csv",
+                "--status", "pending",
+                "--output", outputFile.toString()
+        });
+
+        assertEquals(0, exitCode);
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode root = mapper.readTree(outputFile.toFile());
+
+        assertEquals(1,
+                root.path("reportSummary")
+                        .path("totalProblems")
+                        .asInt());
+
+        assertEquals(3,
+                root.path("validCount")
+                        .asInt());
+
+        assertEquals(1,
+                root.path("problems")
+                        .size());
+
+        assertEquals(
+                "Binary Tree",
+                root.path("problems")
+                        .get(0)
+                        .path("title")
+                        .asText()
+        );
     }
 }
