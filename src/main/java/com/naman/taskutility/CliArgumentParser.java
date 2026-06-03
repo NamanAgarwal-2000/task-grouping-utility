@@ -53,7 +53,17 @@ public class CliArgumentParser {
                                 "Missing value for --status");
                     }
 
-                    options.setStatus(args[++i]);
+                    String status = args[++i];
+
+                    if (!status.equalsIgnoreCase("completed")
+                            && !status.equalsIgnoreCase("pending")
+                            && !status.equalsIgnoreCase("all")) {
+
+                        throw new IllegalArgumentException(
+                                "Invalid value for --status: " + status);
+                    }
+
+                    options.setStatus(status);
                     break;
 
                 case "--category":
@@ -73,7 +83,17 @@ public class CliArgumentParser {
                                 "Missing value for --difficulty");
                     }
 
-                    options.setDifficulty(args[++i]);
+                    String difficulty = args[++i];
+
+                    if (!difficulty.equalsIgnoreCase("easy")
+                            && !difficulty.equalsIgnoreCase("medium")
+                            && !difficulty.equalsIgnoreCase("hard")) {
+
+                        throw new IllegalArgumentException(
+                                "Invalid value for --difficulty: " + difficulty);
+                    }
+
+                    options.setDifficulty(difficulty);
                     break;
 
                 case "--sort-by":
@@ -83,7 +103,17 @@ public class CliArgumentParser {
                                 "Missing value for --sort-by");
                     }
 
-                    options.setSortBy(args[++i]);
+                    String sortBy = args[++i];
+
+                    if (!sortBy.equalsIgnoreCase("title")
+                            && !sortBy.equalsIgnoreCase("time")
+                            && !sortBy.equalsIgnoreCase("difficulty")) {
+
+                        throw new IllegalArgumentException(
+                                "Invalid value for --sort-by: " + sortBy);
+                    }
+
+                    options.setSortBy(sortBy);
                     break;
 
                 case "--sort-order":
@@ -93,13 +123,30 @@ public class CliArgumentParser {
                                 "Missing value for --sort-order");
                     }
 
-                    options.setSortOrder(args[++i]);
+                    String sortOrder = args[++i];
+
+                    if (!sortOrder.equalsIgnoreCase("asc")
+                            && !sortOrder.equalsIgnoreCase("desc")) {
+
+                        throw new IllegalArgumentException(
+                                "Invalid value for --sort-order: " + sortOrder);
+                    }
+
+                    options.setSortOrder(sortOrder);
                     break;
 
                 default:
                     throw new IllegalArgumentException(
                             "Unknown option: " + args[i]);
             }
+        }
+
+        if (options.getSortOrder() != null
+                && !options.getSortOrder().isBlank()
+                && (options.getSortBy() == null
+                || options.getSortBy().isBlank())) {
+            throw new IllegalArgumentException(
+                    "Missing value for --sort-by");
         }
 
         return options;

@@ -124,6 +124,7 @@ public class Main {
                     new ExportResult(
                             report,
                             validationResult.getInvalidRecords(),
+                            problems,
                             validationResult.getValidProblems().size(),
                             validationResult.getInvalidRecords().size()
                     );
@@ -163,7 +164,8 @@ public class Main {
             List<Problem> problems,
             CliOptions options) {
 
-        if (options.getStatus() != null) {
+        if (options.getStatus() != null
+                && !options.getStatus().equalsIgnoreCase("all")) {
 
             List<Problem> filtered = new ArrayList<>();
 
