@@ -64,7 +64,7 @@ class ReportControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(requestBody))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.totalProblems").value(1));
+                .andExpect(jsonPath("$.reportSummary.totalProblems").value(1));
     }
     @Test
     void shouldReturnBadRequestWhenProblemsListIsEmpty() throws Exception {

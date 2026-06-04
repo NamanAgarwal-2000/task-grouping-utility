@@ -19,7 +19,7 @@ public class ReportController {
 
 
     @PostMapping("/reports")
-    public ReportSummary generateReport(
+    public ExportResult generateReport(
             @RequestBody ReportRequest request) {
 
         CliOptions options = new CliOptions();
@@ -34,25 +34,53 @@ public class ReportController {
                 request.getProblems();
         if (problems == null
                 || problems.isEmpty()) {
-
             throw new ValidationException(
                     "Problems list cannot be empty");
         }
+        for (Problem problem : problems) {
 
-        problems =
-                problemService.applyFilters(
-                        problems,
-                        options
-                );
+            if (problem.getStatus() == null
+                    || problem.getStatus().isBlank()) {
 
-        problems =
-                problemService.applySorting(
-                        problems,
-                        options
-                );
+                throw new ValidationException(
+                        "Problem status is required");
+            }
 
-        return generator.generateReport(
-                problems
+            if (problem.getCategory() == null
+                    || problem.getCategory().isBlank()) {
+
+                throw new ValidationException(
+                        "Problem category is required");
+            }
+
+            if (problem.getDifficulty() == null
+                    || problem.getDifficulty().isBlank()) {
+
+                throw new ValidationException(
+                        "Problem difficulty is required");
+            }
+        }
+            problems =
+                    problemService.applyFilters(
+                            problems,
+                            options
+                    );
+
+            problems =
+                    problemService.applySorting(
+                            problems,
+                            options
+                    );
+
+        ReportSummary report =
+                generator.generateReport(problems);
+
+        return new ExportResult(
+                report,
+                List.of(),
+                problems,
+                problems.size(),
+                0
         );
+        }
     }
-}
