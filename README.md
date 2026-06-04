@@ -50,6 +50,69 @@ java -jar target/task-utility-1.0-SNAPSHOT.jar \
   --input src/main/resources/problems.json \
   --output output/report.json
 ```
+## Spring Boot API
+
+### Run Application
+
+```bash
+mvn spring-boot:run
+```
+
+The application starts on:
+
+```text
+http://localhost:8080
+```
+
+### Health Check
+
+```bash
+curl http://localhost:8080/health
+```
+
+Response:
+
+```text
+OK
+```
+
+### Generate Report
+
+```bash
+curl -X POST http://localhost:8080/reports \
+-H "Content-Type: application/json" \
+-d '{
+  "problems": [
+    {
+      "title": "Two Sum",
+      "status": "Completed",
+      "category": "Array",
+      "difficulty": "Easy",
+      "timeSpentMinutes": 30
+    }
+  ]
+}'
+```
+
+Sample Response:
+
+```json
+{
+  "completedProblems": 1,
+  "pendingProblems": 0,
+  "totalProblems": 1,
+  "totalTimeSpent": "0h 30m",
+  "difficultySummary": {
+    "Easy": 1
+  },
+  "groupedResult": {
+    "Array": {
+      "completed": 1
+    }
+  }
+}
+```
+
 
 ## Run Tests
 
